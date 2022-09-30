@@ -46,7 +46,7 @@ def countbigrams_overlapping(spaces):
         templist = [alletters, alletters]
     else:
         templist = [alletters, alletters]
-        text.replace(' ', '')
+        text = text.replace(' ', '')
     for element in itertools.product(*templist):
         allbigrams.append(''.join(element))
 
@@ -58,7 +58,7 @@ def countbigrams_overlapping(spaces):
     percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        # print(k.replace(' ', '_'), str(pct))
+        print(k.replace(' ', '_'), str(pct))
         percentages.append(pct)
     print(percentages)
     return percentages
@@ -73,7 +73,7 @@ def countbigrams_nooverlapping(spaces):
         templist = [alletters, alletters]
     else:
         templist = [alletters, alletters]
-        text.replace(' ', '')
+        text = text.replace(' ', '')
     for element in itertools.product(*templist):
         allbigrams.append(''.join(element))
 
@@ -85,7 +85,7 @@ def countbigrams_nooverlapping(spaces):
     percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        # print(k.replace(' ', '_'), str(pct))
+        print(k.replace(' ', '_'), str(pct))
         percentages.append(pct)
     print(percentages)
     return percentages
@@ -95,13 +95,13 @@ def entropy_calc(probability_list):
     entropy = 0
     for letter in probability_list:
         if letter != 0:
-            entropy += -(letter * math.log(letter))
+            entropy += -(letter * math.log(letter, 2))
     print(entropy)
 
 
 if __name__ == "__main__":
     # cleantextfunc()
-    countletterfrequency(spaces=True)
+    # countletterfrequency(spaces=True)
     # countbigrams_overlapping(spaces=True)
     # countbigrams_nooverlapping(spaces=True)
-    entropy_calc(countletterfrequency(spaces=True))
+    entropy_calc(countbigrams_overlapping(spaces=False))
