@@ -26,10 +26,13 @@ def countletterfrequency(spaces):
         if i in alletters:
             letterfrequency[i] += 1
 
+    percentages = []
     totaloccurences = sum(letterfrequency.values())
     for k, v in dict(reversed(sorted(letterfrequency.items(), key=lambda item: item[1]))).items():
-        pct = round((v * 100.0 / totaloccurences), 3)
-        print(k, str(pct) + '%')
+        pct = round((v / totaloccurences), 3)
+        print(k, str(pct))
+        percentages.append(pct)
+    return percentages
 
     # print(dict(sorted(letterfrequency.items(), key=lambda item: item[1])))
 
@@ -52,12 +55,13 @@ def countbigrams_overlapping(spaces):
         bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
 
     totaloccurences = sum(bigramfrequency.values())
-    # percentages = []
+    percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        print(k.replace(' ', '_'), str(pct))
-        # percentages.append(pct)
-    # print(percentages)
+        # print(k.replace(' ', '_'), str(pct))
+        percentages.append(pct)
+    print(percentages)
+    return percentages
 
 
 def countbigrams_nooverlapping(spaces):
@@ -78,12 +82,13 @@ def countbigrams_nooverlapping(spaces):
         bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
 
     totaloccurences = sum(bigramfrequency.values())
-    # percentages = []
+    percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        print(k.replace(' ', '_'), str(pct))
-        # percentages.append(pct)
-    # print(percentages)
+        # print(k.replace(' ', '_'), str(pct))
+        percentages.append(pct)
+    print(percentages)
+    return percentages
 
 
 def entropy_calc(probability_list):
@@ -99,3 +104,4 @@ if __name__ == "__main__":
     countletterfrequency(spaces=True)
     # countbigrams_overlapping(spaces=True)
     # countbigrams_nooverlapping(spaces=True)
+    entropy_calc(countletterfrequency(spaces=True))
