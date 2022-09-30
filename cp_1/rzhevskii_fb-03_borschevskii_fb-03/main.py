@@ -1,9 +1,10 @@
 import re
 import itertools
+import math
 
-alletters = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й'
-             , 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф'
-             , 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
+alletters1 = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
+              'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+              'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
 
 
 def cleantextfunc():
@@ -15,9 +16,12 @@ def cleantextfunc():
     open('refactoredtext.txt', 'w').write(cleantext)
 
 
-def countletterfrequency():
-    letterfrequency = dict.fromkeys(alletters, 0)
+def countletterfrequency(spaces):
+    alletters = alletters1
     text = open("refactoredtext.txt").read()
+    if spaces is True:
+        alletters.append(' ')
+    letterfrequency = dict.fromkeys(alletters, 0)
     for i in text:
         if i in alletters:
             letterfrequency[i] += 1
@@ -30,50 +34,68 @@ def countletterfrequency():
     # print(dict(sorted(letterfrequency.items(), key=lambda item: item[1])))
 
 
-def countbigramsoverlapping():
+def countbigrams_overlapping(spaces):
+    alletters = alletters1
+    text = open("refactoredtext.txt").read()
     allbigrams = []
-    templist = [alletters, alletters]
+    if spaces is True:
+        alletters.append(' ')
+        templist = [alletters, alletters]
+    else:
+        templist = [alletters, alletters]
+        text.replace(' ', '')
     for element in itertools.product(*templist):
         allbigrams.append(''.join(element))
 
     bigramfrequency = dict.fromkeys(allbigrams, 0)
-    text = open("refactoredtext.txt").read()
-    for count, value in enumerate(text):
-        if value != ' ' and text[count+1] != ' ':
-            bigramfrequency[value + text[count+1]] += 1
+    for i in range(len(text) - 1):
+        bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
 
     totaloccurences = sum(bigramfrequency.values())
     # percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        print(k, str(pct))
+        print(k.replace(' ', '_'), str(pct))
         # percentages.append(pct)
     # print(percentages)
 
 
-def countbigrams_nooverlapping():
+def countbigrams_nooverlapping(spaces):
+    alletters = alletters1
+    text = open("refactoredtext.txt").read()
     allbigrams = []
-    templist = [alletters, alletters]
+    if spaces is True:
+        alletters.append(' ')
+        templist = [alletters, alletters]
+    else:
+        templist = [alletters, alletters]
+        text.replace(' ', '')
     for element in itertools.product(*templist):
         allbigrams.append(''.join(element))
 
     bigramfrequency = dict.fromkeys(allbigrams, 0)
-    text = open("refactoredtext.txt").read()
-    for count, value in enumerate(text):
-        if value != ' ' and text[count + 1] != ' ':
-            bigramfrequency[value + text[count + 1]] += 1
+    for i in range(0, len(text) - 1, 2):
+        bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
 
     totaloccurences = sum(bigramfrequency.values())
     # percentages = []
     for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
         pct = round((v / totaloccurences), 5)
-        print(k, str(pct))
+        print(k.replace(' ', '_'), str(pct))
         # percentages.append(pct)
     # print(percentages)
+
+
+def entropy_calc(probability_list):
+    entropy = 0
+    for letter in probability_list:
+        if letter != 0:
+            entropy += -(letter * math.log(letter))
+    print(entropy)
 
 
 if __name__ == "__main__":
     # cleantextfunc()
-    countletterfrequency()
-    # countbigramsoverlapping()
-    # countbigrams_nooverlapping()
+    countletterfrequency(spaces=True)
+    # countbigrams_overlapping(spaces=True)
+    # countbigrams_nooverlapping(spaces=True)
