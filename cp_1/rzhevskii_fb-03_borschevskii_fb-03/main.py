@@ -96,7 +96,17 @@ def entropy_calc(probability_list):
     for letter in probability_list:
         if letter != 0:
             entropy += -(letter * math.log(letter, 2))
-    print(entropy)
+    print('h1 = ' + str(entropy))
+    return entropy
+
+
+def entropy_calc_h2(probability_list):
+    entropy = 0
+    for letter in probability_list:
+        if letter != 0:
+            entropy += -(letter * math.log(letter, 2))
+    entropy -= entropy_calc(countletterfrequency(spaces=False))
+    print('h2 = ' + str(entropy))
 
 
 if __name__ == "__main__":
@@ -104,4 +114,5 @@ if __name__ == "__main__":
     # countletterfrequency(spaces=True)
     # countbigrams_overlapping(spaces=True)
     # countbigrams_nooverlapping(spaces=True)
-    entropy_calc(countbigrams_overlapping(spaces=False))
+    # entropy_calc_h2(countbigrams_overlapping(spaces=False))
+    entropy_calc(countbigrams_overlapping(spaces=True))
