@@ -7,16 +7,40 @@ alletters1 = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
               'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
 
 
-def cleantextfunc():
-    uncleantext = open("sourcetext.txt", encoding='utf-8').read()
-    cleantext = re.sub('[^ А-Яа-я\nёЁ]+', '', uncleantext)
+def cleantextfunc(sourcefile, outputfile):
+    """Function creates new txt file with cleaned text(only spaces and lowercase chars left)
+
+    Parameters
+    ----------
+    sourcefile : str
+        txt file with source text
+
+    outputfile : str
+        Name of the file where reformatted text should be stored
+    """
+    sourcetext = open(sourcefile, encoding='utf-8').read()
+    cleantext = re.sub('[^ А-Яа-я\nёЁ]+', '', sourcetext)
     cleantext = cleantext.replace('\n', ' ')
     cleantext = re.sub(' +', ' ', cleantext)
     cleantext = cleantext.lower()
-    open('refactoredtext.txt', 'w').write(cleantext)
+    open(outputfile, 'w').write(cleantext)
 
 
-def countletterfrequency(spaces):
+def countletterfrequency(spaces=False):
+    """Function counts the probablitiy of occurence for every character in text
+    and returns the list of all probabilities in descending order in a list.
+    Prints all the letters with it's corresponding value in console
+
+    Parameters
+    ----------
+    spaces : bool
+        Whether we include spaces in text or not. By default false
+
+    Returns
+    -------
+    list
+        a list of all the probablities in descending order
+    """
     alletters = alletters1
     text = open("refactoredtext.txt").read()
     if spaces is True:
@@ -34,10 +58,22 @@ def countletterfrequency(spaces):
         percentages.append(pct)
     return percentages
 
-    # print(dict(sorted(letterfrequency.items(), key=lambda item: item[1])))
 
+def countbigrams_overlapping(spaces=False):
+    """Function counts the probablitiy of occurence for every bigram in text with overlapping
+    and returns the list of all probabilities in descending order in a list.
+    Prints all the bigrams with it's corresponding value in console
 
-def countbigrams_overlapping(spaces):
+    Parameters
+    ----------
+    spaces : bool
+        Whether we include spaces in text or not. By default false
+
+    Returns
+    -------
+    list
+        a list of all the probablities in descending order
+    """
     alletters = alletters1
     text = open("refactoredtext.txt").read()
     allbigrams = []
@@ -64,7 +100,21 @@ def countbigrams_overlapping(spaces):
     return percentages
 
 
-def countbigrams_nooverlapping(spaces):
+def countbigrams_nooverlapping(spaces=False):
+    """Function counts the probablitiy of occurence for every bigram in text without overlapping
+    and returns the list of all probabilities in descending order in a list.
+    Prints all the bigrams with it's corresponding value in console
+
+    Parameters
+    ----------
+    spaces : bool
+        Whether we include spaces in text or not. By default false
+
+    Returns
+    -------
+    list
+        a list of all the probablities in descending order
+    """
     alletters = alletters1
     text = open("refactoredtext.txt").read()
     allbigrams = []
@@ -92,6 +142,19 @@ def countbigrams_nooverlapping(spaces):
 
 
 def entropy_calc(probability_list):
+    """Function counts the expected h1 value for given probability list
+    Prints h1 value in console
+
+    Parameters
+    ----------
+    probability_list : list
+        List of all probabilities for 1-gram
+
+    Returns
+    -------
+    float
+        value of H1
+    """
     entropy = 0
     for letter in probability_list:
         if letter != 0:
@@ -101,6 +164,19 @@ def entropy_calc(probability_list):
 
 
 def entropy_calc_h2(probability_list):
+    """Function counts the expected h2 value for given probability list
+    Prints h2 value in console
+
+    Parameters
+    ----------
+    probability_list : list
+        List of all probabilities for 2-gram
+
+    Returns
+    -------
+    float
+        value of H2
+    """
     entropy = 0
     for letter in probability_list:
         if letter != 0:
@@ -110,9 +186,9 @@ def entropy_calc_h2(probability_list):
 
 
 if __name__ == "__main__":
-    # cleantextfunc()
+    # cleantextfunc('sourcetext.txt', 'refactoredtext.txt')
     # countletterfrequency(spaces=True)
     # countbigrams_overlapping(spaces=True)
     # countbigrams_nooverlapping(spaces=True)
     # entropy_calc_h2(countbigrams_overlapping(spaces=False))
-    entropy_calc(countbigrams_overlapping(spaces=True))
+    entropy_calc_h2(countbigrams_nooverlapping(spaces=True))
