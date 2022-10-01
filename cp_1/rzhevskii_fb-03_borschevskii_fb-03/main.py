@@ -125,7 +125,7 @@ def countbigrams(spaces=False, overlapping=True):
     return percentages
 
 
-def entropy_calc(probability_list):
+def entropy_calc_h1(probability_list):
     """Function counts the expected h1 value for given probability list
     Prints h1 value in console
 
@@ -165,12 +165,12 @@ def entropy_calc_h2(probability_list):
     for letter in probability_list:
         if letter != 0:
             entropy += -(letter * math.log(letter, 2))
-    entropy -= entropy_calc(countletterfrequency(spaces=False))
+    entropy -= entropy_calc_h1(countletterfrequency(spaces=False))
     print('h2 = ' + str(entropy))
 
 
 if __name__ == "__main__":
     # cleantextfunc('sourcetext.txt', 'refactoredtext.txt')
-    countletterfrequency(spaces=False)
-    # countbigrams(spaces=False, overlapping=False)
+    # countletterfrequency(spaces=False)
+    countbigrams(spaces=False, overlapping=False)
     # entropy_calc_h2(countbigrams(spaces=False))
