@@ -1,6 +1,8 @@
 import re
 import itertools
 import math
+import csv
+
 
 alletters1 = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
               'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
@@ -50,6 +52,14 @@ def countletterfrequency(spaces=False):
         if i in alletters:
             letterfrequency[i] += 1
 
+    # header = ['Letter', 'Frequency']
+    # with open('singleletters_nospace.csv', 'w', encoding='UTF8', newline='') as f:
+    #     writer = csv.writer(f)
+    #     writer.writerow(header)
+    #     for items in reversed(sorted(letterfrequency.items(), key=lambda item: item[1])):
+    #         print(items)
+    #         writer.writerow(items)
+
     percentages = []
     totaloccurences = sum(letterfrequency.values())
     for k, v in dict(reversed(sorted(letterfrequency.items(), key=lambda item: item[1]))).items():
@@ -59,15 +69,17 @@ def countletterfrequency(spaces=False):
     return percentages
 
 
-def countbigrams_overlapping(spaces=False):
-    """Function counts the probablitiy of occurence for every bigram in text with overlapping
-    and returns the list of all probabilities in descending order in a list.
+def countbigrams(spaces=False, overlapping=True):
+    """Function counts probablitiy of occurence for every bigram in text
+    and returns the list of all probabilities in descending order.
     Prints all the bigrams with it's corresponding value in console
 
     Parameters
     ----------
     spaces : bool
         Whether we include spaces in text or not. By default false
+    overlapping : bool
+        Whether we count overlapping bigrams. By default true
 
     Returns
     -------
@@ -75,6 +87,11 @@ def countbigrams_overlapping(spaces=False):
         a list of all the probablities in descending order
     """
     alletters = alletters1
+    if overlapping is True:
+        step = 2
+    else:
+        step = 1
+
     text = open("refactoredtext.txt").read()
     allbigrams = []
     if spaces is True:
@@ -87,49 +104,16 @@ def countbigrams_overlapping(spaces=False):
         allbigrams.append(''.join(element))
 
     bigramfrequency = dict.fromkeys(allbigrams, 0)
-    for i in range(len(text) - 1):
+    for i in range(0, len(text) - 1, step):
         bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
 
-    totaloccurences = sum(bigramfrequency.values())
-    percentages = []
-    for k, v in dict(reversed(sorted(bigramfrequency.items(), key=lambda item: item[1]))).items():
-        pct = round((v / totaloccurences), 5)
-        print(k.replace(' ', '_'), str(pct))
-        percentages.append(pct)
-    print(percentages)
-    return percentages
-
-
-def countbigrams_nooverlapping(spaces=False):
-    """Function counts the probablitiy of occurence for every bigram in text without overlapping
-    and returns the list of all probabilities in descending order in a list.
-    Prints all the bigrams with it's corresponding value in console
-
-    Parameters
-    ----------
-    spaces : bool
-        Whether we include spaces in text or not. By default false
-
-    Returns
-    -------
-    list
-        a list of all the probablities in descending order
-    """
-    alletters = alletters1
-    text = open("refactoredtext.txt").read()
-    allbigrams = []
-    if spaces is True:
-        alletters.append(' ')
-        templist = [alletters, alletters]
-    else:
-        templist = [alletters, alletters]
-        text = text.replace(' ', '')
-    for element in itertools.product(*templist):
-        allbigrams.append(''.join(element))
-
-    bigramfrequency = dict.fromkeys(allbigrams, 0)
-    for i in range(0, len(text) - 1, 2):
-        bigramfrequency[str(text[i]) + str(text[i + 1])] += 1
+    # header = ['Bigram', 'Frequency']
+    # with open('bi_noover_nospace.csv', 'w', encoding='UTF8', newline='') as f:
+    #     writer = csv.writer(f)
+    #     writer.writerow(header)
+    #     for items in reversed(sorted(bigramfrequency.items(), key=lambda item: item[1])):
+    #         print(items)
+    #         writer.writerow(items)
 
     totaloccurences = sum(bigramfrequency.values())
     percentages = []
@@ -187,8 +171,6 @@ def entropy_calc_h2(probability_list):
 
 if __name__ == "__main__":
     # cleantextfunc('sourcetext.txt', 'refactoredtext.txt')
-    # countletterfrequency(spaces=True)
-    # countbigrams_overlapping(spaces=True)
-    # countbigrams_nooverlapping(spaces=True)
-    # entropy_calc_h2(countbigrams_overlapping(spaces=False))
-    entropy_calc_h2(countbigrams_nooverlapping(spaces=True))
+    countletterfrequency(spaces=False)
+    # countbigrams(spaces=False, overlapping=False)
+    # entropy_calc_h2(countbigrams(spaces=False))
