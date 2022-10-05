@@ -88,9 +88,9 @@ def countbigrams(spaces=False, overlapping=True):
     """
     alletters = alletters1
     if overlapping is True:
-        step = 2
-    else:
         step = 1
+    else:
+        step = 2
 
     text = open("refactoredtext.txt").read()
     allbigrams = []
