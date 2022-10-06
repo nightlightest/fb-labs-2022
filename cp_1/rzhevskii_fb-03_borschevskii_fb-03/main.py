@@ -165,12 +165,12 @@ def entropy_calc_h2(probability_list):
     for letter in probability_list:
         if letter != 0:
             entropy += -(letter * math.log(letter, 2))
-    entropy -= entropy_calc_h1(countletterfrequency(spaces=False))
+    entropy = entropy / 2
     print('h2 = ' + str(entropy))
 
 
 if __name__ == "__main__":
     # cleantextfunc('sourcetext.txt', 'refactoredtext.txt')
     # countletterfrequency(spaces=False)
-    countbigrams(spaces=False, overlapping=False)
-    # entropy_calc_h2(countbigrams(spaces=False))
+    # countbigrams(spaces=False, overlapping=False)
+    entropy_calc_h2(countbigrams(spaces=True, overlapping=True))
