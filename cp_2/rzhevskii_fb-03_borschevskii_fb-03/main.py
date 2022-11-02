@@ -123,7 +123,7 @@ def calc_key_length(text):
 # open('lab_text_refactored.txt', 'w').write(cleantext)
 
 if __name__ == '__main__':
-    uncleantext = open("sourcetext.txt", encoding='ANSI').read()
+    uncleantext = open("lab_text_var4.txt", encoding='ANSI').read()
     cleantext = re.sub('[^А-Яа-я\nёЁ]+', '', uncleantext)
     cleantext = cleantext.replace('\n', '')
     cleantext = re.sub(' +', ' ', cleantext)
@@ -139,11 +139,11 @@ if __name__ == '__main__':
     print(hit_index_count(ref_text))
     # ref_text = ref_text.replace(' ', '')
     # ref_text = ref_text.replace('ё', 'е')
-    filename = '14key_ciphered.txt'
-    encryption(big_let_key, ref_text, filename)
+    # filename = '14key_ciphered.txt'
+    # encryption(big_let_key, ref_text, filename)
     # cipher_text = open("ciphered_text.txt", 'r').read()
-    cipher_text = open(filename, 'r').read()
+    # cipher_text = open(filename, 'r').read()
 
-    suggestedkey = ident_key(cipher_text, calc_key_length(cipher_text))
+    suggestedkey = ident_key(ref_text, calc_key_length(ref_text))
     print(suggestedkey)
     # decryption('башняяростичерныемаки', cipher_text)
